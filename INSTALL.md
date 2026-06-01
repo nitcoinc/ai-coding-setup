@@ -4,6 +4,8 @@
 
 This guide takes ~15 minutes the first time. Re-run only the parts you skipped.
 
+> **Prefer to be guided?** Open this repo in Claude Code, OpenCode, or Codex and point it at [SETUP.md](SETUP.md). The agent runs the checks and installs for you, asking approval before each command. This doc is the fully-manual equivalent — same steps, your hands.
+
 **Shell conventions in this doc:**
 - Commands prefixed `PS>` are PowerShell (Windows).
 - Commands prefixed `$` (or unprefixed shell blocks) are bash/zsh (macOS, Linux, WSL).
@@ -19,8 +21,9 @@ Choose **one** as your primary. You can install the other later.
 |---|---|---|
 | **Claude Code** | Multi-file reasoning, large refactors, hooks support | `npm install -g @anthropic-ai/claude-code` |
 | **OpenCode** | Plan-then-build discipline, OpenRouter model flexibility | `npm install -g opencode-ai` |
+| **Codex** | OpenAI models, AGENTS.md-native, terminal-first | `npm install -g @openai/codex` |
 
-Both read the same skills (Step 4) and the same playbook. The difference is which folder you copy into your project (Step 5).
+All three read the same skills (Step 3) and the same playbook. The difference is which folder you copy into your project (Step 4).
 
 ---
 
@@ -36,7 +39,7 @@ Install everything in this table. Skip rows you already have.
 | **pnpm** | Faster than npm for project deps | `npm install -g pnpm` | `npm install -g pnpm` |
 | **git** | Required | `brew install git` | [git-scm.com](https://git-scm.com/downloads) |
 | **Your agent** | From Step 1 | see Step 1 | see Step 1 |
-| **API key** | Anthropic key (Claude Code) **or** OpenRouter key (OpenCode) | env var | env var |
+| **API key** | Anthropic key (Claude Code), OpenRouter key (OpenCode), **or** OpenAI key (Codex) | env var | env var |
 
 Verify (Windows PowerShell):
 
@@ -44,6 +47,7 @@ Verify (Windows PowerShell):
 PS> python --version; node --version; git --version; uv --version
 PS> claude --version    # if you chose Claude Code
 PS> opencode --version  # if you chose OpenCode
+PS> codex --version     # if you chose Codex
 ```
 
 Verify (macOS / Linux):
@@ -52,6 +56,7 @@ Verify (macOS / Linux):
 $ python --version && node --version && git --version && uv --version
 $ claude --version    # if you chose Claude Code
 $ opencode --version  # if you chose OpenCode
+$ codex --version     # if you chose Codex
 ```
 
 ---
@@ -133,7 +138,7 @@ This drops in:
 | `CLAUDE.md` | Project rules — auto-read at session start. Fill in the `<PLACEHOLDERS>`. |
 | `PROJECT.md` | Living context doc. Starts empty. |
 | `.gitignore` | Ignores common AI editor artifacts. |
-| `.mcp.json` | Pre-wired MCP servers (Context7, Playwright, Sequential Thinking). |
+| `.mcp.json` | Pre-wired MCP servers (Context7, Playwright, Sequential Thinking). Sequential Thinking is **Claude Code only** — it breaks OpenCode's and is omitted there and in Codex. |
 | `.claude/commands/` | Skills exposed as `/slash-commands`. |
 | `.claude/hooks/` | SessionStart + PreCompact hooks. |
 | `docs/` | Empty `briefs/`, `specs/`, `plans/`, `handovers/`. |
@@ -163,7 +168,7 @@ This drops in:
 | `AGENTS.md` | Project rules — auto-read by OpenCode. Fill in the `<PLACEHOLDERS>`. Includes mandatory PROJECT.md rules to compensate for no hooks. |
 | `PROJECT.md` | Living context doc. **OpenCode has no hooks** — use `/start` at session start and `/checkpoint` before context fills. |
 | `.gitignore` | Same as above. |
-| `opencode.json` | Pre-wired MCP servers in OpenCode format. |
+| `opencode.json` | Pre-wired MCP servers in OpenCode format (Context7 + Playwright; no Sequential Thinking). |
 | `.opencode/commands/` | Skills + workflow commands. Includes `/start`, `/checkpoint`, `/phase`. |
 | `docs/` | Same empty doc folders. |
 
@@ -172,9 +177,55 @@ This drops in:
 > - When context feels heavy or before switching threads: `/checkpoint` — agent writes the current state into PROJECT.md.
 > - Then start a new thread and run `/start` again. Zero lost context.
 
-### Both agents on the same project (advanced)
+### Codex projects
 
-Copy `claude-code/` first, then `opencode/`. The `AGENTS.md` from OpenCode and `CLAUDE.md` from Claude Code can co-exist — they hold the same content. Keep them in sync manually.
+Codex differs from the other two: its **MCP config and slash commands are global**, not per-project. So a Codex setup is three moves — one per-project copy, two global.
+
+**1. Per-project files** (Windows PowerShell):
+
+```powershell
+PS> cd C:\path\to\your\project
+PS> Copy-Item -Path C:\path\to\ai-coding-setup\codex\AGENTS.md  -Destination . -Force
+PS> Copy-Item -Path C:\path\to\ai-coding-setup\codex\PROJECT.md -Destination . -Force
+PS> Copy-Item -Path C:\path\to\ai-coding-setup\codex\docs -Destination . -Recurse -Force
+PS> Copy-Item -Path C:\path\to\ai-coding-setup\codex\.gitignore -Destination . -Force
+```
+
+**macOS / Linux:**
+
+```bash
+$ cd /path/to/your/project
+$ cp /path/to/ai-coding-setup/codex/AGENTS.md /path/to/ai-coding-setup/codex/PROJECT.md /path/to/ai-coding-setup/codex/.gitignore ./
+$ cp -r /path/to/ai-coding-setup/codex/docs ./
+```
+
+**2. MCP servers (global, once):** merge `codex/config.toml` into `~/.codex/config.toml`. It adds `[mcp_servers.context7]` and `[mcp_servers.playwright]`. If that file already has `[mcp_servers.*]` tables, add these alongside — don't duplicate keys.
+
+**3. Slash commands (global, once):** copy `codex/prompts/*` into `~/.codex/prompts/`:
+
+```powershell
+PS> New-Item -ItemType Directory -Force -Path $HOME\.codex\prompts | Out-Null
+PS> Copy-Item -Path C:\path\to\ai-coding-setup\codex\prompts\* -Destination $HOME\.codex\prompts\ -Force
+```
+```bash
+$ mkdir -p ~/.codex/prompts && cp -r /path/to/ai-coding-setup/codex/prompts/* ~/.codex/prompts/
+```
+
+This drops in / wires up:
+
+| File | Purpose |
+|---|---|
+| `AGENTS.md` | Project rules — read by Codex. Fill in the `<PLACEHOLDERS>`. Includes mandatory PROJECT.md rules (Codex has no hooks). |
+| `PROJECT.md` | Living context doc. **Codex has no hooks** — use `/start` at session start and `/checkpoint` before context fills. |
+| `.gitignore` | Same as the other agents. |
+| `~/.codex/config.toml` | MCP servers in Codex TOML format (Context7 + Playwright; no Sequential Thinking). |
+| `~/.codex/prompts/` | Skill shortcuts + `/start`, `/checkpoint`, `/phase`. Each reads the global skill by path. |
+
+> **Codex PROJECT.md workflow:** identical to OpenCode — `/start` first message, `/checkpoint` before context fills, new session, `/start` again. Codex has no SessionStart/PreCompact hooks, so this is manual.
+
+### Multiple agents on the same project (advanced)
+
+Copy the folders in any order. `CLAUDE.md` (Claude Code) and `AGENTS.md` (OpenCode + Codex) co-exist — they hold the same content; keep them in sync manually. OpenCode and Codex share the one `AGENTS.md`. Note the MCP config differs per agent: `.mcp.json` (Claude Code), `opencode.json` (OpenCode), `~/.codex/config.toml` (Codex, global).
 
 ---
 
@@ -242,17 +293,7 @@ PS> uv tool install mem0ai
 $ uv tool install mem0ai
 ```
 
-Then add it as an MCP server in `.mcp.json` (Claude Code) or `opencode.json` (OpenCode). See https://github.com/mem0ai/mem0 for the latest config.
-
-### Team knowledge vault — Tolaria
-
-Stores team-shared decisions, postmortems, patterns. Not per-machine — vault path varies.
-
-1. Download desktop app: [refactoringhq/tolaria](https://github.com/refactoringhq/tolaria/releases)
-2. Create a vault folder, e.g. `~/Documents/tolaria-vault/`
-3. Add the Tolaria MCP entry to your project's `.mcp.json` (Claude Code) or `opencode.json` (OpenCode).
-
-> **mem0 vs Tolaria:** mem0 is personal and automatic. Tolaria is team-shared and manual. Use both — they serve different purposes.
+Then add it as an MCP server in `.mcp.json` (Claude Code), `opencode.json` (OpenCode), or `~/.codex/config.toml` (Codex). See https://github.com/mem0ai/mem0 for the latest config.
 
 ### Python dependency graph — `graphify`
 
@@ -276,6 +317,21 @@ For read-only scraping without Playwright overhead.
    - **macOS / Linux:** `mv obscura /usr/local/bin/obscura && chmod +x /usr/local/bin/obscura`
 
 **Rule:** read/extract → Obscura. Click/interact → Playwright.
+
+---
+
+## Reference only — not part of standard setup
+
+These were evaluated but are **not** wired into the drop-in folders or the standard flow. Listed here so a developer who wants them knows where to look. Install and configure manually at your own discretion.
+
+### Team knowledge vault — Tolaria
+
+Team-shared decisions, postmortems, and patterns vault (distinct from mem0, which is personal and automatic). Not per-machine — vault path varies, and it requires its own desktop app + MCP wiring.
+
+- Desktop app: [refactoringhq/tolaria](https://github.com/refactoringhq/tolaria/releases)
+- If you adopt it, create a vault folder (e.g. `~/Documents/tolaria-vault/`) and add the Tolaria MCP entry to your agent's MCP config (`.mcp.json`, `opencode.json`, or `~/.codex/config.toml`).
+
+> Removed from the standard setup to keep the kit minimal. mem0 covers the personal-memory case out of the box.
 
 ---
 

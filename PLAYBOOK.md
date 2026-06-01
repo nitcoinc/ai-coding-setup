@@ -243,12 +243,12 @@ Invoke `debug` skill on the failing file. It will audit imports and identify hal
 **Session continuity — DIFFERENT per agent:**
 
 - **Claude Code:** hooks handle it. SessionStart auto-reads `PROJECT.md`. PreCompact updates it before compaction. Run `/compact` when the HUD shows ~75%.
-- **OpenCode:** no hooks. Use these slash commands instead:
+- **OpenCode & Codex:** no hooks. Use these slash commands instead (OpenCode loads them from `.opencode/commands/`; Codex from the global `~/.codex/prompts/`):
   - `/start` — FIRST message of every session. Reads `PROJECT.md`, `AGENTS.md`, latest spec/plan; restates the task and current phase.
   - `/checkpoint` — run before context fills (~every 20 exchanges) or before switching threads. Writes a checkpoint block to `PROJECT.md` so the next session can resume cleanly.
-  - After `/checkpoint`, start a new thread. Begin it with `/start`.
+  - After `/checkpoint`, start a new thread/session. Begin it with `/start`.
 
-This is the fix for the OpenCode-not-updating-PROJECT.md problem: it's not automatic — you trigger it.
+This is the fix for the not-updating-PROJECT.md problem on hookless agents: it's not automatic — you trigger it.
 
 ---
 

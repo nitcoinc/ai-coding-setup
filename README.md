@@ -1,8 +1,8 @@
 # AI Coding Setup
 
-> Copy-paste files for **Claude Code** and **OpenCode**. Manual install, zero scripts. One playbook, one workflow, every project.
+> Drop-in files for **Claude Code**, **OpenCode**, and **Codex**. One playbook, one workflow, every project. Agent-guided setup or fully manual — your choice.
 
-This is the minimum kit to make an AI coding agent useful on a real project. No automation. No `curl | bash`. You install tools manually, copy a folder into your project, and follow the 7-phase playbook.
+This is the minimum kit to make an AI coding agent useful on a real project. No scripts that run unattended. One playbook. Stack-agnostic. Three first-class agents.
 
 ---
 
@@ -10,24 +10,53 @@ This is the minimum kit to make an AI coding agent useful on a real project. No 
 
 | Path | What it is |
 |---|---|
-| **[INSTALL.md](INSTALL.md)** | Manual install — prerequisites, tools, agent choice, copy steps. Start here. |
+| **[SETUP.md](SETUP.md)** | Agent-guided install — open in Claude Code, OpenCode, or Codex and it installs & verifies the tools for you (with your approval per command). |
+| **[INSTALL.md](INSTALL.md)** | Fully manual install — prerequisites, tools, agent choice, copy steps. The step-by-step alternative to SETUP.md. |
 | **[PLAYBOOK.md](PLAYBOOK.md)** | The 7-phase workflow: Brief → Brainstorm → Plan → Implement → Verify → Review → Ship. |
 | **[DEMO.md](DEMO.md)** | End-to-end walkthrough for the team — one realistic feature from idea to merged PR. ~30 min. |
-| **[MAINTAINING.md](MAINTAINING.md)** | Maintainer's guide — north star, design decisions, enhancement backlog, AI-session prompts for evolving this repo. |
-| `skills/` | 11 skills copied into `~/.claude/skills/` once. Used by both agents. |
-| `claude-code/` | Drop-in folder for Claude Code projects (`CLAUDE.md`, `.mcp.json`, hooks, slash commands). |
-| `opencode/` | Drop-in folder for OpenCode projects (`AGENTS.md`, `opencode.json`, slash commands). |
+| **[MAINTAINING.md](MAINTAINING.md)** | Maintainer's guide — north star, design decisions, enhancement backlog. |
+| `skills/` | 11 skills in `~/.claude/skills/` — installed once, shared by all three agents. |
+| `claude-code/` | Drop-in for Claude Code: `CLAUDE.md`, `.mcp.json`, hooks, slash commands. |
+| `opencode/` | Drop-in for OpenCode: `AGENTS.md`, `opencode.json`, slash commands. |
+| `codex/` | Drop-in for Codex: `AGENTS.md`, `config.toml` (global), `prompts/` (global). |
 
 ---
 
-## Get going in 4 steps
+## Get going
+
+### Fast path — agent-guided
+
+Open this repo in Claude Code, OpenCode, or Codex and say:
+
+```
+Follow SETUP.md
+```
+
+The agent detects your OS, checks what's installed, installs missing tools (asking for approval before each command), copies the right folder into your project, and prints a verification summary.
+
+### Manual path
 
 1. Read **[INSTALL.md](INSTALL.md)** — install prerequisites, pick an agent.
-2. Copy `skills/` → `~/.claude/skills/` (global, once).
-3. Copy either `claude-code/` or `opencode/` contents into your project root.
-4. Fill in the `<PLACEHOLDERS>` in `CLAUDE.md` / `AGENTS.md`.
+2. Copy `skills/` → `~/.claude/skills/` (once, global — all three agents read this).
+3. Copy the agent folder into your project root:
+   - Claude Code → copy `claude-code/`
+   - OpenCode → copy `opencode/`
+   - Codex → copy `codex/` per-project files + merge `config.toml` into `~/.codex/config.toml` + copy `prompts/` to `~/.codex/prompts/`
+4. Fill in the `<PLACEHOLDERS>` in `CLAUDE.md` / `AGENTS.md` after Phase 1 brainstorm.
 
 Open the project. Read **[PLAYBOOK.md](PLAYBOOK.md)**. Start at Phase 0.
+
+---
+
+## Agents at a glance
+
+| Agent | Reads | MCP config | Hooks | Slash commands |
+|---|---|---|---|---|
+| **Claude Code** | `CLAUDE.md` | `.mcp.json` (per-project) | ✅ SessionStart + PreCompact | `.claude/commands/` (per-project) |
+| **OpenCode** | `AGENTS.md` | `opencode.json` (per-project) | ❌ use `/start` + `/checkpoint` | `.opencode/commands/` (per-project) |
+| **Codex** | `AGENTS.md` | `~/.codex/config.toml` (global) | ❌ use `/start` + `/checkpoint` | `~/.codex/prompts/` (global) |
+
+All three use the same 11 skills (`~/.claude/skills/`), the same `PLAYBOOK.md`, and the same `PROJECT.md` format. Switch agents mid-feature with zero lost context.
 
 ---
 
@@ -36,22 +65,20 @@ Open the project. Read **[PLAYBOOK.md](PLAYBOOK.md)**. Start at Phase 0.
 Most "AI coding setups" are loose collections of prompts. This one is intentionally small:
 
 - **Skills do the work.** Brainstorm, plan, TDD, debug, review — each is a self-contained skill the agent invokes.
-- **PROJECT.md tracks state.** A single file at your repo root holds current task, decisions, failed approaches, next steps. Survives context compaction, session switches, and handoffs.
+- **PROJECT.md tracks state.** One file at your repo root holds current task, decisions, failed approaches, next steps. Survives context compaction, session switches, and handoffs.
 - **AGENTS.md / CLAUDE.md is the contract.** One short file every agent reads first. Verification commands live there once, never inline.
 - **The playbook is the orchestration.** Seven phases, mapped to skills. Stack-agnostic.
 
-If you outgrow it, delete what you don't use. The whole repo is < 1000 lines.
+If you outgrow it, delete what you don't use. The whole repo is under 1 000 lines.
 
 ---
 
 ## What this repo does NOT do
 
-- No installer script. Every step is manual.
+- No unattended installer. SETUP.md asks before every command. INSTALL.md is fully manual.
 - No `/setup-stack` slash command.
 - No telemetry. Nothing phones home.
-- No stack opinions baked into the playbook — your `AGENTS.md` defines the stack.
-
-Manual is the feature.
+- No stack opinions — your `AGENTS.md` / `CLAUDE.md` defines the stack after Phase 1 brainstorm.
 
 ---
 

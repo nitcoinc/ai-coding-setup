@@ -19,7 +19,7 @@ When you open this repo in Claude Code or OpenCode to enhance it, **make this fi
 - An installer or scaffolder. No `npx create-…`, no `/setup-stack`, no `curl | bash`.
 - A code generator or boilerplate generator.
 - A replacement for `AGENTS.md` conventions — it ships a *starter* `AGENTS.md`, not a finished one.
-- A multi-tool harmoniser. Only Claude Code and OpenCode are first-class. Cursor / Codex / Aider users can adapt manually.
+- A multi-tool harmoniser. Claude Code, OpenCode, and Codex are first-class (each has a drop-in folder). Cursor / Aider users can adapt manually.
 
 If a proposed change pulls the project toward what it is not, push back hard. The minimalism is a feature.
 
@@ -30,6 +30,7 @@ If a proposed change pulls the project toward what it is not, push back hard. Th
 ```
 ai-coding-setup-main/
 ├── README.md          Index. What this is. Links to everything.
+├── SETUP.md           Agent-guided install. Read by an agent; installs w/ per-command approval.
 ├── INSTALL.md         Manual install. Windows + Unix commands side by side.
 ├── PLAYBOOK.md        7-phase workflow. Stack-agnostic. References skills.
 ├── DEMO.md            Team walkthrough. One realistic feature end-to-end.
@@ -47,9 +48,18 @@ ai-coding-setup-main/
 │   │   └── hooks/     SessionStart + PreCompact.
 │   ├── .gitignore     Project-level ignore template.
 │   └── docs/          Empty briefs/specs/plans/handovers.
-└── opencode/          Same as claude-code/ but for OpenCode.
-                       Adds /start and /checkpoint (no hooks in OpenCode).
-                       AGENTS.md spells out the manual PROJECT.md workflow.
+├── opencode/          Same as claude-code/ but for OpenCode.
+│                      Adds /start and /checkpoint (no hooks in OpenCode).
+│                      opencode.json MCPs: Context7, Playwright (no Sequential Thinking).
+│                      AGENTS.md spells out the manual PROJECT.md workflow.
+└── codex/             Drop-in folder for Codex projects (no hooks, like OpenCode).
+    ├── AGENTS.md      Same no-hooks AGENTS.md as opencode/.
+    ├── config.toml    MCPs in TOML — merged into GLOBAL ~/.codex/config.toml.
+    ├── PROJECT.md     Living state template.
+    ├── .gitignore     Project-level ignore template.
+    ├── prompts/       14 global slash commands → copied to ~/.codex/prompts/.
+    │                  Each reads the global skill by path (no skill auto-discovery).
+    └── docs/          Empty briefs/specs/plans/handovers.
 ```
 
 ---
@@ -88,9 +98,16 @@ Each of these was deliberate. Any AI session changing them should be questioned.
 - **Why:** terser rules get followed; verbose rules get skimmed.
 - Keep `<200 lines` per CLAUDE.md / AGENTS.md. If it grows, something else has to leave.
 
-### 3.7 Both agents pinned via MCP versions in `.mcp.json` / `opencode.json`
-- Context7 `@2.2.5`, Playwright `@0.0.75`, Sequential Thinking `@2025.12.18`.
+### 3.7 MCP versions pinned per agent
+- Context7 `@2.2.5`, Playwright `@0.0.75` in all three agents.
+- Sequential Thinking `@2025.12.18` is **Claude Code only** (`.mcp.json`). It breaks OpenCode's MCP loader, so it is omitted from `opencode/opencode.json` and `codex/config.toml`. If you re-add it anywhere, it's Claude Code only.
+- Three config formats: `.mcp.json` (Claude Code, JSON), `opencode.json` (OpenCode, JSON, `type: "local"` + `pnpm dlx`), `~/.codex/config.toml` (Codex, TOML, global — not per-project).
 - Don't use `@latest`. Pin and bump deliberately so nothing breaks silently.
+
+### 3.8 SETUP.md is the one sanctioned agent-driven install (deliberate exception to 3.4)
+- `SETUP.md` is a Markdown *prompt*, not a script. An agent reads it and runs install commands **with per-command human approval**. No `.sh`/`.ps1`/`.py` is added; nothing runs unattended.
+- This was a deliberate, user-approved exception to "no automation" (§3.4): the value is a guided path for non-expert teammates, and "manual is the feature" is preserved because `INSTALL.md` remains the equal, fully-manual route and the agent never installs without a yes.
+- **Enforce the boundary:** SETUP.md must never become a script, must keep per-command approval, and must keep pointing at INSTALL.md as the manual equivalent. If a PR turns it into an unattended installer, reject it.
 
 ---
 
@@ -102,7 +119,7 @@ When you change this repo, **run the playbook on it**. That's the dogfood test: 
 
 1. **Brief** in `PROJECT.md`: what the skill does, when it activates, what it produces.
 2. **Phase 1:** Invoke `/brainstorm`. Decide: scope (single SKILL.md, no subfiles), output artifacts, when to trigger, when NOT to trigger.
-3. **Phase 2:** `/plan`. Tasks: write SKILL.md, add slash-command shortcut in both `claude-code/.claude/commands/` and `opencode/.opencode/commands/`, mention in README and PLAYBOOK if it changes the workflow.
+3. **Phase 2:** `/plan`. Tasks: write SKILL.md, add slash-command shortcut in `claude-code/.claude/commands/`, `opencode/.opencode/commands/`, and `codex/prompts/`, mention in README and PLAYBOOK if it changes the workflow.
 4. **Phase 3:** Implement. New skill folder under `skills/<name>/SKILL.md`. Follow the existing skill format (see `skills/brainstorm/SKILL.md` for reference).
 5. **Phase 4:** Verify by manually invoking the skill against a sample task.
 6. **Phase 5+6:** Update README skills table, ship.
@@ -113,21 +130,21 @@ When you change this repo, **run the playbook on it**. That's the dogfood test: 
 
 Examples: `/start`, `/checkpoint`, `/phase`. These wrap workflow actions, not skills.
 
-1. Create `claude-code/.claude/commands/<name>.md` and/or `opencode/.opencode/commands/<name>.md`.
+1. Create `claude-code/.claude/commands/<name>.md`, `opencode/.opencode/commands/<name>.md`, and/or `codex/prompts/<name>.md` (Codex prompts are global — copied to `~/.codex/prompts/`).
 2. Format: frontmatter with `description:`, then the prompt body.
-3. Reference the same role twice if it's an OpenCode-only manual replacement for a Claude Code hook.
+3. Reference the same role across the no-hooks agents (OpenCode + Codex) if it's a manual replacement for a Claude Code hook (e.g. `/start`, `/checkpoint`).
 4. Mention it in `INSTALL.md` Step 4 table and `PLAYBOOK.md` if it affects the workflow.
 
 ### 4.3 Adding an MCP server
 
 1. Pick a stable version. Confirm with [Context7](https://context7.com) or the upstream repo.
-2. Add to **both** `claude-code/.mcp.json` (Claude Code format) and `opencode/opencode.json` (OpenCode format, uses `type: "local"` and `pnpm dlx`).
-3. Update README's MCP table.
+2. Add to **all three** unless the server is agent-specific: `claude-code/.mcp.json` (JSON), `opencode/opencode.json` (JSON, `type: "local"` + `pnpm dlx`), and `codex/config.toml` (TOML, `[mcp_servers.<name>]`). If a server only works on one agent (e.g. Sequential Thinking → Claude Code only), add it there and note the exclusion in §3.7.
+3. Update README's MCP table and `SETUP.md`/`INSTALL.md` if the wired set changes.
 4. If it requires a key or extra config, document in `INSTALL.md` — optional tools section.
 
 ### 4.4 Updating CLAUDE.md / AGENTS.md templates
 
-- Edits to `claude-code/CLAUDE.md` must mirror in `opencode/AGENTS.md`, **except** for sections that are agent-specific (e.g., OpenCode's PROJECT.md manual rules).
+- Edits to `claude-code/CLAUDE.md` must mirror in `opencode/AGENTS.md` and `codex/AGENTS.md`, **except** for sections that are agent-specific (e.g., the no-hooks PROJECT.md manual rules in OpenCode/Codex, or Codex's global-MCP note).
 - Keep the "caveman" voice. If a section gets verbose, split it or delete it.
 - Stack and verification command sections must remain `TBD` comments — never ship a pre-filled stack.
 
@@ -151,7 +168,7 @@ A running list of things that *could* be added. Pull from this when you run a br
 - **Pre-PR slash command** — `/ready-to-merge` runs verify + code-review + handover + CHANGELOG entry in one go.
 
 ### Worth considering
-- **Cursor support** — a third drop-in folder (`cursor/`) with `.cursor/rules/` pointing at the same skills. Most of the value is already in `AGENTS.md`, which Cursor reads natively.
+- **Cursor support** — another drop-in folder (`cursor/`) with `.cursor/rules/` pointing at the same skills. Most of the value is already in `AGENTS.md`, which Cursor reads natively. (Claude Code, OpenCode, and Codex are already first-class.)
 - **`.devcontainer/`** — optional dev-container with Node + Python + uv + agent CLIs pre-installed. Speeds onboarding for teams using Codespaces.
 - **Skill: `prompt-cache-tune`** — guidance on placing cache breakpoints in long-running agent workflows for Anthropic API users.
 - **Localized AGENTS.md** — a few of the team are non-native English speakers. Translated versions could lower friction.

@@ -98,6 +98,8 @@ $ git add . && git commit -m "init: ai-coding-setup scaffolding (stack TBD)"
 
 > **OpenCode users:** copy `opencode/` instead. Same idea. After opening the project, your first message must always be `/start` — OpenCode has no SessionStart hook, so this is the manual replacement.
 
+> **Codex users:** copy `codex/` (per-project `AGENTS.md` + `PROJECT.md` + `docs/`), merge `codex/config.toml` into `~/.codex/config.toml`, and copy `codex/prompts/*` into `~/.codex/prompts/` once. Like OpenCode, Codex has no hooks — start every session with `/start`. Or just run [SETUP.md](SETUP.md) and let the agent wire it up.
+
 Open the project in Claude Code:
 
 ```bash
