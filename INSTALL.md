@@ -257,6 +257,45 @@ Open the project in your agent. Read `PLAYBOOK.md`. Start at **Phase 0**.
 
 > **Filling the stack happens after Phase 1.** The brainstorm skill will decide your stack with you. PLAYBOOK.md's Phase 1 ends with the explicit step *"Update AGENTS.md / CLAUDE.md with the agreed stack and verification commands."* That's when you replace the `<PLACEHOLDERS>`. Until then, the playbook prompts that reference "verification commands from AGENTS.md" simply have nothing to verify — and that's fine, because there's nothing built yet.
 
+### Optional team standard for app repos
+
+If Phase 1 decides the project needs both frontend and backend code, choose one template:
+
+- `templates/pnpm-monorepo/` — generic pnpm workspace.
+- `templates/nextjs-fastify/` — Next.js + Fastify.
+- `templates/vite-express/` — Vite + Express.
+- `templates/nextjs-nest/` — Next.js + NestJS.
+- `templates/nextjs-fastapi/` — Next.js + FastAPI/uv.
+
+Example copy for the generic pnpm monorepo:
+
+```powershell
+PS> Copy-Item -Path C:\path\to\ai-coding-setup\templates\pnpm-monorepo\* -Destination . -Recurse -Force
+PS> Copy-Item -Path C:\path\to\ai-coding-setup\templates\pnpm-monorepo\.github -Destination . -Recurse -Force
+PS> Copy-Item -Path C:\path\to\ai-coding-setup\templates\pnpm-monorepo\.dockerignore -Destination . -Force
+```
+
+```bash
+$ cp -r /path/to/ai-coding-setup/templates/pnpm-monorepo/. ./
+```
+
+Then replace the placeholder package scripts with the chosen frontend/backend framework commands and update `AGENTS.md` / `CLAUDE.md`:
+
+```markdown
+- Package manager: pnpm
+- Workspace: pnpm workspaces
+- Lint: `pnpm lint`
+- Typecheck: `pnpm typecheck`
+- Test: `pnpm test`
+- Build: `pnpm build`
+- Local dev: `pnpm dev`
+- Frontend image: `docker build --target web-runtime -t <image>-web .`
+- Backend image: `docker build --target api-runtime -t <image>-api .`
+```
+
+See `docs/TECHNICAL-STANDARDS.md` for the reasoning.
+For dependency safety rules, also read `docs/DEPENDENCY-SECURITY.md`.
+
 ---
 
 ## Optional tools (install when you need them)

@@ -3,17 +3,17 @@
     "context7": {
       "type": "stdio",
       "command": "pnpm",
-      "args": ["exec", "@upstash/context7-mcp@2.2.5"]
+      "args": ["dlx", "@upstash/context7-mcp@2.2.5"]
     },
     "playwright": {
       "type": "stdio",
       "command": "pnpm",
-      "args": ["exec", "@playwright/mcp@0.0.75"]
+      "args": ["dlx", "@playwright/mcp@0.0.75"]
     },
     "sequential-thinking": {
       "type": "stdio",
       "command": "pnpm",
-      "args": ["exec", "@modelcontextprotocol/server-sequential-thinking@2025.12.18"]
+      "args": ["dlx", "@modelcontextprotocol/server-sequential-thinking@2025.12.18"]
     }
   }
 }

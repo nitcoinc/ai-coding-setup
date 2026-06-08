@@ -15,6 +15,10 @@ This is the minimum kit to make an AI coding agent useful on a real project. No 
 | **[PLAYBOOK.md](PLAYBOOK.md)** | The 7-phase workflow: Brief → Brainstorm → Plan → Implement → Verify → Review → Ship. |
 | **[DEMO.md](DEMO.md)** | End-to-end walkthrough for the team — one realistic feature from idea to merged PR. ~30 min. |
 | **[MAINTAINING.md](MAINTAINING.md)** | Maintainer's guide — north star, design decisions, enhancement backlog. |
+| **[docs/TECHNICAL-STANDARDS.md](docs/TECHNICAL-STANDARDS.md)** | Team defaults for pnpm, monorepos, Docker, and GitHub Actions. |
+| **[docs/DEPENDENCY-SECURITY.md](docs/DEPENDENCY-SECURITY.md)** | Stable patch updates, pnpm release-age protection, uv/FastAPI scanning rules. |
+| **[docs/ROUTER-OPTIONS.md](docs/ROUTER-OPTIONS.md)** | OpenCode + OpenRouter vs Claude Code Router guidance and revert checklist. |
+| `templates/` | Optional starter templates: generic pnpm monorepo plus nextjs-fastify, vite-express, nextjs-nest, nextjs-fastapi. |
 | `skills/` | 11 skills in `~/.claude/skills/` — installed once, shared by all three agents. |
 | `claude-code/` | Drop-in for Claude Code: `CLAUDE.md`, `.mcp.json`, hooks, slash commands. |
 | `opencode/` | Drop-in for OpenCode: `AGENTS.md`, `opencode.json`, slash commands. |
@@ -78,7 +82,7 @@ If you outgrow it, delete what you don't use. The whole repo is under 1 000 line
 - No unattended installer. SETUP.md asks before every command. INSTALL.md is fully manual.
 - No `/setup-stack` slash command.
 - No telemetry. Nothing phones home.
-- No stack opinions — your `AGENTS.md` / `CLAUDE.md` defines the stack after Phase 1 brainstorm.
+- No forced stack opinions — your `AGENTS.md` / `CLAUDE.md` defines the stack after Phase 1 brainstorm. For teams that want a standard default, see `docs/TECHNICAL-STANDARDS.md`, `docs/DEPENDENCY-SECURITY.md`, and `templates/`.
 
 ---
 

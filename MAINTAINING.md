@@ -10,14 +10,16 @@ When you open this repo in Claude Code or OpenCode to enhance it, **make this fi
 
 **Is:**
 - A **manual** kit. The user installs tools by hand and copies folders into their project.
-- A **minimum viable setup** that makes Claude Code or OpenCode useful on a real project.
-- **Stack-agnostic.** Nothing hard-codes pnpm, ruff, pytest, etc.
+- A **minimum viable setup** that makes Claude Code, OpenCode, or Codex useful on a real project.
+- **Stack-agnostic drop-ins.** Nothing in `CLAUDE.md` / `AGENTS.md` hard-codes pnpm, ruff, pytest, etc.
+- **Optional team standards.** Reusable defaults can live in docs/templates, but they are copied only after Phase 1 chooses them.
 - **Skill-driven.** The 11 skills in `~/.claude/skills/` do the work; the playbook is just the order to invoke them.
 - **Two artifacts per project:** `PROJECT.md` (live state) and `docs/` (per-feature history). Nothing else accrues.
 
 **Is not:**
 - An installer or scaffolder. No `npx create-…`, no `/setup-stack`, no `curl | bash`.
 - A code generator or boilerplate generator.
+- A forced stack template. Standards are optional references, not mandatory setup.
 - A replacement for `AGENTS.md` conventions — it ships a *starter* `AGENTS.md`, not a finished one.
 - A multi-tool harmoniser. Claude Code, OpenCode, and Codex are first-class (each has a drop-in folder). Cursor / Aider users can adapt manually.
 
@@ -37,6 +39,17 @@ ai-coding-setup-main/
 ├── MAINTAINING.md     This file. North star + enhancement guide.
 ├── LICENSE            MIT.
 ├── .gitignore         Minimal — repo-level only.
+├── docs/
+│   ├── TECHNICAL-STANDARDS.md
+│   ├── DEPENDENCY-SECURITY.md
+│   ├── ROUTER-OPTIONS.md
+│   └── specs/         Maintainer specs for this kit.
+├── templates/
+│   ├── pnpm-monorepo/ Optional generic app starter.
+│   ├── nextjs-fastify/ Optional opinionated full-stack starter.
+│   ├── vite-express/ Optional opinionated full-stack starter.
+│   ├── nextjs-nest/ Optional opinionated full-stack starter.
+│   └── nextjs-fastapi/ Optional Python/FastAPI backend starter.
 ├── skills/            11 self-contained skills. Each is one SKILL.md.
 │                      Copied globally to ~/.claude/skills/ by the user.
 ├── claude-code/       Drop-in folder for Claude Code projects.
@@ -83,6 +96,7 @@ Each of these was deliberate. Any AI session changing them should be questioned.
 - **Why:** Stack gets chosen during Phase 1 (Brainstorm). Filling it earlier is guessing.
 - **Where:** `claude-code/CLAUDE.md` and `opencode/AGENTS.md` ship with the stack and verification commands wrapped in HTML comments labeled `TBD until after Phase 1 brainstorm`.
 - **PLAYBOOK.md** has the explicit closing step of Phase 1 that says "lock the stack now."
+- **Team standards:** `docs/TECHNICAL-STANDARDS.md`, `docs/DEPENDENCY-SECURITY.md`, and `templates/` are allowed because they are optional references. Do not copy those assumptions into the default agent rules.
 
 ### 3.4 No installer, no automation
 - **Why:** Automation is a maintenance treadmill. The repo had `setup_helpers.py`, `stack.toml`, `/setup-stack` — all deleted. They drift faster than they help.
@@ -101,7 +115,7 @@ Each of these was deliberate. Any AI session changing them should be questioned.
 ### 3.7 MCP versions pinned per agent
 - Context7 `@2.2.5`, Playwright `@0.0.75` in all three agents.
 - Sequential Thinking `@2025.12.18` is **Claude Code only** (`.mcp.json`). It breaks OpenCode's MCP loader, so it is omitted from `opencode/opencode.json` and `codex/config.toml`. If you re-add it anywhere, it's Claude Code only.
-- Three config formats: `.mcp.json` (Claude Code, JSON), `opencode.json` (OpenCode, JSON, `type: "local"` + `pnpm dlx`), `~/.codex/config.toml` (Codex, TOML, global — not per-project).
+- Three config formats: `.mcp.json` (Claude Code, JSON, `pnpm dlx`), `opencode.json` (OpenCode, JSON, `type: "local"` + `pnpm dlx`), `~/.codex/config.toml` (Codex, TOML, global — not per-project).
 - Don't use `@latest`. Pin and bump deliberately so nothing breaks silently.
 
 ### 3.8 SETUP.md is the one sanctioned agent-driven install (deliberate exception to 3.4)
@@ -161,7 +175,7 @@ Examples: `/start`, `/checkpoint`, `/phase`. These wrap workflow actions, not sk
 A running list of things that *could* be added. Pull from this when you run a brainstorm on the repo itself.
 
 ### Likely valuable
-- **Examples folder** — `examples/node-ts/AGENTS.md`, `examples/python/AGENTS.md`, etc. Filled-in references the user can copy commands from. Read-only, not part of the drop-in.
+- **More templates** — Python API, Node API-only, and full-stack examples. Filled-in references the user can copy commands from. Read-only, not part of the drop-in.
 - **`/handover` slash command for Claude Code** — auto-generates `docs/handovers/<feature>-<date>.md` from PROJECT.md + git log + spec/plan.
 - **Skill: `security-audit`** — dependency check, secret scan, OWASP top-10 review. Activates on PR review or `/security-audit`.
 - **Skill: `dependency-update`** — guided bump-and-test loop for one dependency at a time. Useful for the team's monthly upgrade work.

@@ -68,6 +68,18 @@ Respond like smart caveman. Cut filler, keep substance.
 - No eval. No `shell=True`. No string-concat subprocess.
 - Validate every external input.
 
+## dependency safety
+- Prefer latest stable patch. Avoid prerelease unless approved.
+- Node: use pnpm 11+, commit lockfile, enforce minimumReleaseAge.
+- Python: use uv, commit uv.lock, run scanner before merge.
+- Dependency PRs: audit/outdated, changelog skim, full verify.
+- New package needs reason, maintainer health, security check.
+
+## frontend
+- Invoke `frontend-design` before UI changes.
+- Verify responsive desktop/mobile states.
+- Build real UI, not landing filler.
+
 ## git
 - Branch per feature. Never commit to main.
 - git-guardrails skill active — dangerous ops require confirmation.
@@ -80,6 +92,7 @@ Respond like smart caveman. Cut filler, keep substance.
 - Recall past context → `mem0 search`
 - Test UI flow → playwright (MCP)
 - Live library docs → context7 (MCP)
+- UI/design work → `frontend-design` skill
 - Never use one tool for another's job.
 
 ### ccc (semantic code search)
@@ -91,6 +104,11 @@ Respond like smart caveman. Cut filler, keep substance.
 - `mem0 search "<query>"` — recall
 - `mem0 add "<fact>"` — save decision/lesson
 - `mem0 list --limit 20` — recent
+
+### Claude Code Router (optional)
+- Experimental OpenRouter path. See `docs/ROUTER-OPTIONS.md`.
+- Prefer `ccr code` for trials. Do not persist `ccr activate` by default.
+- Revert: `ccr stop`, close routed shell, run `claude` normally.
 
 ## when stuck
 - Invoke `debug` skill. 4-phase root cause.
