@@ -3,7 +3,7 @@
 ## identity
 Senior engineer. Ship deliberately. Verify before claiming done.
 
-## stack — fill after /spec
+## stack — fill after `/feature` planning
 <!--
 - Frontend: <chosen>
 - Backend: <chosen>
@@ -12,7 +12,7 @@ Senior engineer. Ship deliberately. Verify before claiming done.
 - Tests: <chosen>
 -->
 
-## verification commands — fill after /spec
+## verification commands — fill after `/feature` planning
 <!--
 - Lint: `<lint-cmd>`
 - Typecheck: `<typecheck-cmd>`
@@ -35,12 +35,12 @@ Before context gets heavy:
 2. Start a fresh session if needed.
 
 ## workflow aliases
-Use `.opencode/commands/`: `/onboard`, `/spec`, `/feature`, `/implement`, `/incident`, `/performance`, `/ui`, `/security`, `/dependency-update`, `/release`, `/refactor`, `/review`, `/testplan`, `/freshcheck`, `/pressuretest`, `/goodpractices`.
+Use `.opencode/commands/`: `/feature`, `/incident`, `/performance`, `/release`, `/refactor`, `/review`, `/testplan`, `/freshcheck`, `/pressuretest`.
 
 ## before code
 - Read `AGENTS.md` and `PROJECT.md`.
 - Use `ccc search "<intent>"` before broad file reads if `ccc` is installed.
-- Use `/spec` before multi-file, API, auth, data, infra, or user-facing changes.
+- Use `/feature` before multi-file, API, auth, data, infra, or user-facing changes.
 - Use `/freshcheck` before adopting or upgrading external tools/packages.
 - Use Context7 for current implementation docs after a tool is chosen.
 
@@ -71,7 +71,7 @@ Use `.opencode/commands/`: `/onboard`, `/spec`, `/feature`, `/implement`, `/inci
 - New package needs reason, freshness check, security check, and verification.
 
 ## frontend
-- Use `/ui` before UI work.
+- Use the UI recipe from `optional-recipies/` before UI work when needed.
 - Verify desktop and mobile states.
 - Check overflow, overlap, keyboard flow, loading/empty/error states, and accessibility basics.
 

@@ -1,23 +1,26 @@
 # /incident
 
-Use this when something is broken.
+Use the installed coding-agent skills to handle this as an incident/debugging workflow.
 
 Issue:
 $ARGUMENTS
 
 Required workflow:
-1. Do not guess the fix first.
-2. Capture symptoms, scope, recent changes, and reproduction steps.
-3. Identify possible causes and evidence needed.
-4. Inspect only relevant files, logs, tests, and runtime behavior.
-5. Form a root-cause hypothesis and validate it.
-6. Implement the smallest safe fix.
-7. Add or update a regression test.
-8. Run `/review` and release checks if production is affected.
-9. Store a durable prevention note with `mem0 add` only if it will help future sessions.
+1. Use debugging skill.
+2. Do not guess the fix first.
+3. Identify possible causes.
+4. List evidence needed.
+5. Inspect only relevant files/logs.
+6. Form a root-cause hypothesis.
+7. Use root-cause-analysis before proposing final fix.
+8. Implement the smallest safe fix.
+9. Use testing skill to add regression tests.
+10. Use deployment-readiness if production is affected.
+11. Store useful prevention notes with Mem0 CLI only if they are durable and non-sensitive.
 
 Output:
 - Symptoms
+- Likely causes
 - Evidence checked
 - Root cause
 - Fix

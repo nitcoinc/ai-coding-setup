@@ -95,5 +95,5 @@ Confirm:
 First useful command in the target project:
 
 ```text
-/onboard
+/feature <first useful task>
 ```

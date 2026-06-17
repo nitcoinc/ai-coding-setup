@@ -5,35 +5,29 @@
 ## Default Flow
 
 ```text
-/onboard -> /spec -> /pressuretest -> /implement -> /review -> /release
+/feature -> /review -> /release
 ```
 
-Skip steps only when the task is truly small.
+Use `/pressuretest` before expensive decisions and `/freshcheck` before external tool/package decisions.
 
 ## When To Use Each Alias
 
 | Situation | Alias |
 |---|---|
-| New repo or unfamiliar area | `/onboard` |
-| Serious feature or architecture change | `/spec` |
 | New functionality | `/feature` |
-| Approved spec ready for coding | `/implement` |
 | Bug or production issue | `/incident` |
 | Slow API, UI, build, query, memory, CPU | `/performance` |
-| UI or frontend behavior | `/ui` |
-| Auth, permissions, secrets, dependency risk | `/security` |
-| Package upgrades | `/dependency-update` |
 | Before deployment | `/release` |
 | Behavior-preserving cleanup | `/refactor` |
 | Code review | `/review` |
 | Test planning | `/testplan` |
 | Current external research | `/freshcheck` |
 | Challenge a plan | `/pressuretest` |
-| Improve repo health | `/goodpractices` |
+| UI, security, or repo-health prompt help | `optional-recipies/` |
 
 ## Spec-Driven Work
 
-Use `/spec` when work touches multiple files, APIs, auth, data, infrastructure, dependencies, or user-facing behavior.
+Spec-driven and bulletproof implementation prompts are documented in `docs/PROMPTING-TECHNIQUES.md`, but they are not installed as aliases by default yet. Use Compound Engineering as the source of truth for planning/execution until those prompts are tried and proven with the team.
 
 The spec should define:
 - Goal
@@ -45,7 +39,7 @@ The spec should define:
 - Tests
 - Rollback or recovery
 
-Then use `/implement` to execute in small slices.
+If you want to trial those recipes, use them manually from the docs or `optional-recipies/` first.
 
 ## Tool Rules
 

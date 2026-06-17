@@ -1,6 +1,6 @@
 # /review
 
-Use this for code review.
+Use code-review skill.
 
 Review:
 $ARGUMENTS
@@ -12,7 +12,6 @@ Focus on:
 - Maintainability
 - Performance
 - Test coverage
-- Deployment risk
 
 Output findings by severity:
 - Critical

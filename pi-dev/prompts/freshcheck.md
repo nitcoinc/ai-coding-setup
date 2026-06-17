@@ -1,9 +1,11 @@
 # /freshcheck
 
-Use this for current external information. This is external research, not codebase research.
+Use Last30Days.
 
 Freshness check target:
 $ARGUMENTS
+
+This is external research, not codebase research.
 
 Use this for:
 - Libraries

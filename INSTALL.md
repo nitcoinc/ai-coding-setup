@@ -33,6 +33,8 @@ mem0 --help
 
 ## Claude Code
 
+Before relying on aliases, run the stack installer prompt in `docs/INSTALL-SKILL-STACK-PROMPT.md` inside Claude Code. The alias prompts depend on Compound Engineering, selected Addy skills, Last30Days, and Grill-me being installed.
+
 Copy `claude-code/` into your project root.
 
 It includes:
@@ -47,6 +49,8 @@ MCPs included: Context7 and Playwright.
 
 ## OpenCode
 
+Before relying on aliases, run the stack installer prompt in `docs/INSTALL-SKILL-STACK-PROMPT.md` inside OpenCode.
+
 Copy `opencode/` into your project root.
 
 It includes:
@@ -59,6 +63,8 @@ It includes:
 Run `/start` at the beginning of each session and `/checkpoint` before context gets heavy.
 
 ## Codex
+
+Before relying on aliases, run the stack installer prompt in `docs/INSTALL-SKILL-STACK-PROMPT.md` inside Codex.
 
 Copy project files:
 
@@ -90,6 +96,8 @@ Import `pi-dev/prompts/` as reusable prompt templates.
 
 See `pi-dev/README.md`.
 
+Before relying on aliases, run the stack installer prompt in `docs/INSTALL-SKILL-STACK-PROMPT.md` inside Pi.dev.
+
 ## Tools
 
 Context7:
@@ -114,6 +122,5 @@ Mem0:
 In a new project, start with:
 
 ```text
-/onboard
-/spec <your first feature or cleanup goal>
+/feature <your first feature or cleanup goal>
 ```

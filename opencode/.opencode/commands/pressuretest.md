@@ -1,8 +1,8 @@
 # /pressuretest
 
-Use this to challenge a plan before committing to it.
+Use grill-me.
 
-Plan or idea:
+Plan or idea to pressure-test:
 $ARGUMENTS
 
 Goal:

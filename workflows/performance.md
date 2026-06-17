@@ -1,18 +1,19 @@
 # /performance
 
-Use this for slow APIs, slow UI, heavy queries, memory growth, CPU issues, or inefficient workflows.
+Use the installed coding-agent skills to handle this as a performance investigation.
 
 Problem:
 $ARGUMENTS
 
 Required workflow:
-1. Identify the bottleneck category: database, network, CPU, memory, frontend rendering, external API, startup time, or build time.
-2. Gather evidence before optimizing.
-3. Use `/freshcheck` if a tool, runtime, framework, or library recommendation may have changed recently.
-4. Use Context7 for implementation docs after the tool/framework is chosen.
-5. Propose fixes with tradeoffs and rollback risk.
-6. Add a validation method: benchmark, regression test, profiling trace, Lighthouse result, or query plan.
-7. Avoid large rewrites unless the evidence demands it.
+1. Use performance skill first.
+2. Identify bottleneck category: database, network, CPU, memory, frontend rendering, or external API.
+3. Do not optimize blindly.
+4. Ask for or inspect metrics.
+5. Use architecture-review if design changes are needed.
+6. Use refactoring only if code structure causes the bottleneck.
+7. Use testing skill to create performance/regression checks.
+8. Use Context7 only if current framework/library docs are needed.
 
 Output:
 - Suspected bottleneck

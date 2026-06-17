@@ -3,7 +3,7 @@
 ## identity
 Senior engineer. Ship deliberately. Verify before claiming done.
 
-## stack — fill after /spec
+## stack — fill after `/feature` planning
 <!--
 - Frontend: <chosen>
 - Backend: <chosen>
@@ -12,7 +12,7 @@ Senior engineer. Ship deliberately. Verify before claiming done.
 - Tests: <chosen>
 -->
 
-## verification commands — fill after /spec
+## verification commands — fill after `/feature` planning
 <!--
 - Lint: `<lint-cmd>`
 - Typecheck: `<typecheck-cmd>`
@@ -27,27 +27,20 @@ Read `PROJECT.md`, check `ccc status` if available, then check `git status`.
 ## workflow aliases
 Use the slash commands in `.claude/commands/`.
 
-- `/onboard` — understand an unfamiliar repo.
-- `/spec` — write/pressure-test a spec before serious work.
 - `/feature` — build functionality safely.
-- `/implement` — execute an approved spec slice by slice.
 - `/incident` — debug without guessing.
 - `/performance` — investigate slowness with evidence.
-- `/ui` — design and verify frontend work.
-- `/security` — review security, auth, secrets, dependencies.
-- `/dependency-update` — update packages safely.
 - `/release` — prepare deployment.
 - `/refactor` — improve structure without behavior change.
 - `/review` — code review.
 - `/testplan` — design tests.
 - `/freshcheck` — current external research.
 - `/pressuretest` — challenge a plan.
-- `/goodpractices` — improve repo health.
 
 ## before code
 - Read `AGENTS.md`/`CLAUDE.md` and `PROJECT.md`.
 - Use `ccc search "<intent>"` before broad file reads if `ccc` is installed.
-- Use `/spec` before multi-file, API, auth, data, infra, or user-facing changes.
+- Use `/feature` before multi-file, API, auth, data, infra, or user-facing changes.
 - Use `/freshcheck` before adopting or upgrading external tools/packages.
 - Use Context7 for current implementation docs after a tool is chosen.
 
@@ -78,7 +71,7 @@ Use the slash commands in `.claude/commands/`.
 - New package needs reason, freshness check, security check, and verification.
 
 ## frontend
-- Use `/ui` before UI work.
+- Use the UI recipe from `optional-recipies/` before UI work when needed.
 - Verify desktop and mobile states.
 - Check overflow, overlap, keyboard flow, loading/empty/error states, and accessibility basics.
 

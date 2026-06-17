@@ -6,25 +6,18 @@ Pi.dev support is prompt-template based.
 
 Copy or import the files from `pi-dev/prompts/` as Pi.dev reusable prompts/aliases.
 
-Recommended aliases:
+Canonical aliases:
 
 ```text
-/onboard
-/spec
 /feature
-/implement
 /incident
 /performance
-/ui
-/security
-/dependency-update
 /release
 /refactor
 /review
 /testplan
 /freshcheck
 /pressuretest
-/goodpractices
 ```
 
 Each prompt is adapted from the repo's canonical `workflows/` directory.
@@ -41,11 +34,12 @@ If Pi.dev cannot directly invoke one of these tools, ask it to produce the exact
 
 ## Validation
 
+Run `docs/INSTALL-SKILL-STACK-PROMPT.md` in Pi.dev before relying on aliases.
+
 Test these prompts in a disposable project:
 
 ```text
-/onboard
-/spec add a health endpoint
+/feature add a health endpoint
 /freshcheck evaluate Context7 MCP
 /pressuretest migrate REST to GraphQL
 ```

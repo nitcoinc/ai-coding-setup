@@ -1,17 +1,16 @@
 # /release
 
-Use this before staging or production deployment.
+Use the installed coding-agent skills to handle this as a release-readiness review.
 
 Release:
 $ARGUMENTS
 
 Required workflow:
-1. Review changed files with `/review`.
-2. Verify lint, typecheck, tests, build, and container build if applicable.
-3. Check migrations, rollback plan, secrets, environment variables, permissions, logging, monitoring, alerts, and breaking changes.
-4. Run `/freshcheck` if dependencies, frameworks, MCP tools, APIs, or infrastructure tools changed.
-5. Confirm deployment steps and rollback command.
-6. Mark ready only if blockers are resolved or explicitly accepted.
+1. Use code-review for changed files.
+2. Use testing skill to verify coverage.
+3. Use deployment-readiness.
+4. Use Last30Days if dependencies, frameworks, MCP tools, APIs, or infrastructure tools were added or upgraded.
+5. Check migrations, rollback plan, secrets, monitoring, logs, alerts, permissions, environment variables, and breaking changes.
 
 Output:
 - Ready / not ready verdict

@@ -7,7 +7,7 @@ This demo shows the intended workflow in a new project.
 Use the project's agent:
 
 ```text
-/onboard
+/feature add a health check endpoint and status page
 ```
 
 Expected result:
@@ -17,10 +17,10 @@ Expected result:
 - risks
 - recommended next workflow
 
-## 2. Write A Spec
+## 2. Plan Through The Stack
 
 ```text
-/spec Add a health check endpoint and status page.
+/feature add a health check endpoint and status page
 ```
 
 The agent should define:
@@ -42,7 +42,7 @@ Resolve major objections before coding.
 ## 4. Implement
 
 ```text
-/implement docs/specs/<date>-health-status.md
+/feature continue health status implementation
 ```
 
 The agent should implement one slice at a time, run targeted checks, and stop if the spec is wrong.
@@ -52,7 +52,7 @@ The agent should implement one slice at a time, run targeted checks, and stop if
 If the feature has UI:
 
 ```text
-/ui health status page
+Use optional-recipies/ui.md for the health status page
 ```
 
 Use Playwright to verify desktop and mobile behavior.

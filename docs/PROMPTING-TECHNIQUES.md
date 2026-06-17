@@ -2,24 +2,26 @@
 
 Use this guide when working with Claude Code, Codex, OpenCode, or Pi.dev.
 
+These techniques are recommendations and recipes. They are not installed as default aliases because Compound Engineering already owns the maintained planning/execution loop. Trial these manually first; only promote them to aliases after the team proves they add value without duplicating CE.
+
 ## Default Strategy
 
-For meaningful work, use this chain:
+For meaningful work, default to:
 
 ```text
-/onboard -> /spec -> /pressuretest -> /implement -> /review -> /release
+/feature -> /review -> /release
 ```
 
-Use direct asks only for tiny edits, typo fixes, simple commands, or one-file changes with obvious behavior.
+Use `/pressuretest` before expensive decisions and `/freshcheck` before external tool/package decisions.
 
 ## Spec-Driven Development
 
-Use `/spec` when work touches multiple files, user-facing behavior, auth, data, APIs, infrastructure, dependencies, or deployment.
+Use this spec recipe manually when work touches multiple files, user-facing behavior, auth, data, APIs, infrastructure, dependencies, or deployment.
 
 Good spec prompt:
 
 ```text
-/spec Add organization-level roles for admin, manager, and staff.
+Use the spec recipe for organization-level roles for admin, manager, and staff.
 
 Focus on:
 - current auth model
@@ -42,12 +44,12 @@ Do not implement until the spec is clear enough that another engineer could exec
 
 ## Bulletproof Implementation
 
-Use `/implement` after the spec is approved.
+Use this implementation recipe manually after the spec is approved.
 
 Good implementation prompt:
 
 ```text
-/implement docs/specs/2026-06-17-roles.md
+Use the implementation recipe for docs/specs/2026-06-17-roles.md.
 
 Rules:
 - implement one slice at a time
@@ -75,10 +77,10 @@ Use `/freshcheck` before adopting tools or upgrading packages.
 Check releases, maintenance, security, breaking changes, and current recommendation.
 ```
 
-Use `/dependency-update` for stable upgrades.
+Use this stable-upgrade recipe manually for dependency updates.
 
 ```text
-/dependency-update Upgrade Next.js to the latest stable patch.
+Use the dependency-update recipe to upgrade Next.js to the latest stable patch.
 ```
 
 Rules:
@@ -90,10 +92,10 @@ Rules:
 
 ## UI Prompt
 
-Use `/ui` before UI work.
+Use the optional UI recipe before UI work.
 
 ```text
-/ui Design the project dashboard for a team lead reviewing build status, open risks, and next actions.
+Use the UI recipe to design the project dashboard for a team lead reviewing build status, open risks, and next actions.
 
 Prioritize:
 - scannability
@@ -117,7 +119,7 @@ Check query plan, payload size, caching, indexes, and frontend render cost.
 ## Security Prompt
 
 ```text
-/security Review authentication, authorization, secrets handling, dependency risk, and logging for the current branch.
+Use the security recipe to review authentication, authorization, secrets handling, dependency risk, and logging for the current branch.
 ```
 
 Always separate authentication from authorization. Always check secret leakage.
@@ -125,7 +127,7 @@ Always separate authentication from authorization. Always check secret leakage.
 ## Existing Project Prompt
 
 ```text
-/onboard This repo is new to me. Identify stack, entry points, commands, risks, and the best workflow for adding <task>.
+Use the onboarding recipe to identify stack, entry points, commands, risks, and the best workflow for adding <task>.
 ```
 
 Pair it with `ccc search` for targeted code discovery once the high-level map is clear.
@@ -133,7 +135,7 @@ Pair it with `ccc search` for targeted code discovery once the high-level map is
 ## Good Practices Prompt
 
 ```text
-/goodpractices Review this repo for the five highest-leverage improvements for developer experience, CI, dependencies, Docker, docs, and agent readiness.
+Use the good-practices recipe to review this repo for the five highest-leverage improvements for developer experience, CI, dependencies, Docker, docs, and agent readiness.
 ```
 
 Do not let this become a rewrite. Ask for the smallest useful next step.

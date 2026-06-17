@@ -4,22 +4,27 @@ This repo uses a lean workflow-alias stack instead of local skill folders.
 
 ## Included Aliases
 
-- `/onboard` — understand a repo before work.
-- `/spec` — write/pressure-test a spec.
 - `/feature` — build functionality safely.
-- `/implement` — execute an approved spec.
 - `/incident` — debug and fix issues.
 - `/performance` — investigate slowness.
-- `/ui` — design and verify frontend work.
-- `/security` — review security-sensitive work.
-- `/dependency-update` — upgrade packages safely.
 - `/release` — prepare deployment.
 - `/refactor` — improve structure safely.
 - `/review` — review code.
 - `/testplan` — design tests.
 - `/freshcheck` — research current external facts.
 - `/pressuretest` — challenge assumptions.
-- `/goodpractices` — improve repo health.
+
+Optional recipes live in `optional-recipies/` and are not installed as aliases by default.
+
+## Required Underlying Stack
+
+The aliases depend on the installed skill/plugin stack. Use `docs/INSTALL-SKILL-STACK-PROMPT.md` inside each platform before relying on the aliases.
+
+Core stack:
+- Compound Engineering.
+- Selected Addy Osmani skills: planning, architecture-review, debugging, root-cause-analysis, code-review, testing, refactoring, performance, deployment-readiness.
+- Last30Days.
+- Grill-me.
 
 ## Tools To Keep
 
@@ -34,6 +39,7 @@ This repo uses a lean workflow-alias stack instead of local skill folders.
 - Duplicate documentation MCPs.
 - Dox or another overlapping documentation framework.
 - Full unfiltered third-party skill libraries.
+- Spec/implementation aliases until they are tried and proven against CE without duplication.
 - Unpinned MCP versions in committed config.
 
 ## Memory Rule
